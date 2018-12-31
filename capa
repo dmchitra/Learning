@@ -1,0 +1,372 @@
+package Utility;
+
+import static Utility.R_Start.StoreTable;
+import static Utility.FunctionLibrary.driver;
+
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.remote.MobileCapabilityType;
+
+import java.awt.Robot;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Platform;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.support.ui.FluentWait;
+
+import com.google.gson.Gson;
+
+import Controller.Server;
+
+
+public class UserdefinedCapabalities extends UserdefinedLibrary{
+
+	public UserdefinedCapabalities() throws InterruptedException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+	
+	public static DesiredCapabilities FirefoxCapabality() throws IOException, InterruptedException
+    {
+		String MyProject =(String) StoreTable.get("SelectProjectFolderName"); 
+		DesiredCapabilities caps = new DesiredCapabilities();  
+		
+		
+		//update the capabilities by project specification
+		switch (MyProject.toString())
+		{
+			case "Sample_Demo_Mercury_Web":
+		    System.out.println("In Userdefined FirefoxCapabality"  + TC.InputData);
+		    System.setProperty("webdriver.gecko.driver",System.getProperty("user.dir") + "/src/geckodriver.exe");
+		    return caps;
+		   
+			case "DMP":
+			    System.out.println("In Userdefined FirefoxCapabality"  + TC.InputData);
+			    return caps;
+			 
+			case "AIG":
+			    System.out.println("In Userdefined FirefoxCapabality"  + TC.InputData);
+			    caps.setCapability("browserName", "firefox");
+                caps.setCapability("version" , "");
+                caps.setCapability("platform" , "WINDOWS");
+                System.setProperty("webdriver.firefox.bin", System.getProperty("user.home")+"/AppData/Local/Mozilla Firefox/firefox.exe");
+                System.setProperty("webdriver.gecko.driver",System.getProperty("user.dir") + "/src/geckodriver.exe");
+			    return caps;
+		    
+		    
+			default :
+				
+				caps.setCapability("browserName", "firefox");
+                caps.setCapability("version" , "");
+                caps.setCapability("platform" , "WINDOWS");
+               // System.setProperty("webdriver.firefox.bin", System.getProperty("user.home")+"/AppData/Local/Mozilla Firefox/firefox.exe");
+                System.setProperty("webdriver.gecko.driver",System.getProperty("user.dir") + "/src/geckodriver.exe");
+	
+				return caps;
+				
+				
+		}
+   	
+    }
+	
+	
+
+	public static DesiredCapabilities FirefoxMozillaWithoutGekoCapabality() throws IOException, InterruptedException
+    {
+		String MyProject =(String) StoreTable.get("SelectProjectFolderName"); 
+		DesiredCapabilities caps = new DesiredCapabilities();  
+		
+		
+		//update the capabilities by project specification
+		switch (MyProject.toString())
+		{
+			case "Sample_Demo_Mercury_Web":
+		    System.out.println("In Userdefined FirefoxCapabality"  + TC.InputData);
+		    System.setProperty("webdriver.gecko.driver",System.getProperty("user.dir") + "/src/geckodriver.exe");
+		    return caps;
+		   
+			case "DMP":
+			    System.out.println("In Userdefined FirefoxCapabality"  + TC.InputData);
+			    return caps;
+			 
+			case "AIG":
+			    System.out.println("In Userdefined FirefoxCapabality"  + TC.InputData);
+			    return caps;
+		    
+		    
+			default :
+				//System.setProperty("webdriver.gecko.driver",System.getProperty("user.dir") + "/src/geckodriver.exe");
+				return caps;
+				
+				
+		}
+   	
+    }
+	
+	public static DesiredCapabilities IECapabality() throws IOException, InterruptedException
+    {
+		String MyProject =(String) StoreTable.get("SelectProjectFolderName"); 
+		DesiredCapabilities caps = new DesiredCapabilities();  
+		
+
+		//update the capabilities by project specification
+		switch (MyProject.toString())
+		{
+			case "Sample_Demo_Mercury_Web_New":
+				DesiredCapabilities capab = new DesiredCapabilities();
+				caps.setCapability("ignoreProtectedModeSettings", true);
+				caps.setCapability(CapabilityType.BROWSER_NAME ,"internet explorer");				 
+				caps.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, org.openqa.selenium.UnexpectedAlertBehaviour.ACCEPT);
+				caps.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, false);
+				caps.setCapability(CapabilityType.ELEMENT_SCROLL_BEHAVIOR,	true);
+				caps.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+				System.setProperty("webdriver.ie.driver",System.getProperty("user.dir") + "/src/IEDriverServer.exe");
+				
+		    return caps;
+		   
+			case "Proj1":
+			    System.out.println("In Userdefined IECapabality"  + TC.InputData);
+			    return caps;
+			 
+			case "Proj2":
+			    System.out.println("In Userdefined IECapabality"  + TC.InputData);
+			    return caps;
+		    
+		    
+			default :
+				caps.setCapability("ignoreProtectedModeSettings", true);
+				caps.setCapability(CapabilityType.BROWSER_NAME ,"internet explorer");				 
+				caps.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, org.openqa.selenium.UnexpectedAlertBehaviour.ACCEPT);
+				caps.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, false);
+				caps.setCapability(CapabilityType.ELEMENT_SCROLL_BEHAVIOR,	true);
+				caps.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+				System.setProperty("webdriver.ie.driver",System.getProperty("user.dir") + "/src/IEDriverServer.exe");
+				return caps;
+				
+				
+		}
+   	
+    }
+	
+	
+
+	public static DesiredCapabilities ChromeCapabality() throws IOException, InterruptedException
+    {
+		String MyProject =(String) StoreTable.get("SelectProjectFolderName"); 
+		DesiredCapabilities caps = new DesiredCapabilities();  
+		
+
+		//update the capabilities by project specification
+		switch (MyProject.toString())
+		{
+			case "Sample_Demo_Mercury_Web":
+				caps.setCapability("browserName", "chrome");
+				caps.setCapability("version" , "");
+				caps.setCapability("platform" , "WINDOWS");				
+				System.setProperty("webdriver.chrome.driver",System.getProperty("user.dir") + "/src/chromedriver.exe");
+				
+		    return caps;
+		   
+			case "Proj1":
+			    System.out.println("In Userdefined chromeCapabality"  + TC.InputData);
+			    return caps;
+			 
+			case "Proj2":
+			    System.out.println("In Userdefined chromeCapabality"  + TC.InputData);
+			    return caps;
+		    
+		    
+			default :				
+				
+				System.setProperty("webdriver.chrome.driver",System.getProperty("user.dir") + "/src/chromedriver.exe");
+				caps.setCapability("browserName", "chrome");
+				caps.setCapability("version" , "");
+				caps.setCapability("platform" , "WINDOWS");
+				return caps;
+				
+				
+		}
+   	
+    }
+	
+
+
+	
+	
+	//template
+	public static void UserdefineinputTemplate()
+    {
+		
+   
+		System.out.println("In Userdefined Function"  + TC.InputData);
+   	
+    }
+
+	
+	
+	public static String OpenAppDisableJS() throws IOException, InterruptedException {
+
+		try {
+
+			driver = null;
+				
+			Logs.Ulog("Opening browser");
+			String MyBrowser =(String) StoreTable.get("Execute ON Browser"); 
+		switch (MyBrowser .toString())
+		{
+			case "Mozilla":
+			
+				try {
+
+					if (StoreTable.get("Execute On Grid").equals("YY")) {
+
+						DesiredCapabilities capability = DesiredCapabilities.firefox();
+						driver = new RemoteWebDriver(new URL((String) StoreTable.get("Set Grid IP")), capability);
+						UpdateResult.UpDateBrowserVer();
+
+					} 
+					else {
+						DesiredCapabilities caps = new DesiredCapabilities();
+						caps.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT,false);
+											
+						driver = new FirefoxDriver(caps);
+						UpdateResult.UpDateBrowserVer();
+					}
+
+				} catch (Throwable T) {
+					Logs.Ulog("Error While Launching browser Mozilla" + T.getMessage());
+
+				}
+               break;
+			case "MozillaWithoutGeko":
+				
+				try {
+
+					if (StoreTable.get("Execute On Grid").equals("YY")) {
+
+						DesiredCapabilities capability = DesiredCapabilities.firefox();
+						driver = new RemoteWebDriver(new URL((String) StoreTable.get("Set Grid IP")), capability);
+						UpdateResult.UpDateBrowserVer();
+
+					} 
+					else {
+						DesiredCapabilities caps = new DesiredCapabilities();
+						caps.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT,false);	
+						driver = new FirefoxDriver(caps);
+						UpdateResult.UpDateBrowserVer();
+					}
+
+				} catch (Throwable T) {
+					Logs.Ulog("Error While Launching browser Mozilla" + T.getMessage());
+
+				}
+               break;             
+					
+		case "IE":
+			try {
+				
+			
+
+
+				if (StoreTable.get("Execute On Grid").equals("YY")) {
+
+					driver = new RemoteWebDriver(new URL((String) StoreTable.get("Set Grid IP")), UserdefinedCapabalities.IECapabality());
+
+				} else {
+					DesiredCapabilities caps = new DesiredCapabilities();
+					caps.setCapability("ignoreProtectedModeSettings", true);
+					caps.setCapability(CapabilityType.BROWSER_NAME ,"internet explorer");	
+					caps.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT,false);	
+					caps.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, org.openqa.selenium.UnexpectedAlertBehaviour.ACCEPT);
+					caps.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, false);
+					caps.setCapability(CapabilityType.ELEMENT_SCROLL_BEHAVIOR,	true);
+					caps.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+					System.setProperty("webdriver.ie.driver",System.getProperty("user.dir") + "/src/IEDriverServer.exe");
+					driver = new InternetExplorerDriver(caps);
+					UpdateResult.UpDateBrowserVer();
+					//driver.manage().deleteAllCookies();				
+					
+				}
+
+			} catch (Throwable T) {
+				
+				Logs.Ulog("Error While Launching browser IE" + T.getMessage());
+			}
+
+			 break; 
+		case "Chrome":
+			try {
+				
+
+				if (StoreTable.get("Execute On Grid").equals("YY")) {
+
+					DesiredCapabilities capability = DesiredCapabilities.chrome();
+					driver = new RemoteWebDriver(new URL((String) StoreTable.get("Set Grid IP")), UserdefinedCapabalities.ChromeCapabality());
+
+				} else {
+					
+					DesiredCapabilities caps = new DesiredCapabilities();
+					caps.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT,false);				
+					driver = new ChromeDriver(caps);
+					UpdateResult.UpDateBrowserVer();
+					driver.manage().deleteAllCookies();
+				}
+
+			} catch (Throwable T) {
+				Logs.Ulog("Error While Launching browser Chrome" + T.getMessage());
+			}			
+			 break; 
+					default :
+				CatchStatementWebElement("ERROR -- No browser has been selecte please check global setup sheet row number 2 config value column ");
+			
+		} 	
+			UpdateResult.ExpectedData = (String) MyBrowser ;
+			UpdateResult.ActualData = (String) MyBrowser ;
+			TC.ExpectedData = (String) MyBrowser ;
+
+						return UpdateResult.UpdateStatus();
+		} 
+		catch (Throwable e) 
+		{
+			UpdateResult.ActualData = TC.FAIL;
+			UpdateResult.FailDescription = e.getMessage();
+			UpdateResult.UpdateStatus();
+		System.out.println("***********************************************************************************************************************");
+		System.out.println("***********************************************************************************************************************");
+			e.printStackTrace();
+			return TC.FAIL;
+		}
+		
+
+	}
+	
+	
+	
+}
