@@ -1,0 +1,38 @@
+Selenium theory
+Limitation of Selenium
+1.	We can use Selenium only to test web applications. We cannot test desktop applications or any other software
+2.	There is no guaranteed support available for Selenium. We need to leverage on the available customer communities
+3.	It is not possible to perform testing on images. We need to integrate Selenium with Sikuli for image based testing
+4.	There is no native reporting facility. But we can overcome that issue by integrating it with frameworks like TestNG or JUnit
+5.	Captcha and Bar code readers cannot be tested using Selenium
+6.	No Object Repository
+7.	Need high technical skills to work with selenium
+8.	Data driven testing requires external excel sheet 
+
+Advantages of Selenium
+1.	Open source
+2.	Supports multiple browsers (FF,IE,Chrome,Safari and Opera)
+3.	Supports multiple platform (Windows,Linux and mac)
+4.	Supports parallel execution
+5.	Supports multiple languages Java,python,C#, Perl, ruby and php
+
+
+What is JavaScriptExecutor?
+JavaScriptExecutor is an interface which provides mechanism to execute Javascript through selenium driver. It provides “executescript” & “executeAsyncScript” methods, to run JavaScript in the context of the currently selected frame or window.
+Using webdriver:
+driver.findElement(By.name("phone")).click(); driver.findElement(By.name("phone")).sendKeys("(222)222-2222"); driver.findElement(By.id("ssn")).click(); driver.findElement(By.id("ssn")).sendKeys("555-55-5555"); 
+Using JSexecutor:
+WebElement wb = driver.findElement(By.name("phone")); 
+JavascriptExecutor jse = (JavascriptExecutor)driver; jse.executeScript("arguments[0].value='(222)222-2222';", wb); jse.executeScript("document.getElementById('ssn').value='555-55-5555';");
+Passing arg to JavaScript
+JavaScriptExecutor js = (JavaScriptExecutor) driver; String test = (String) js.executeScript("return arguments[0];", "macon");
+Set long string in the edit box
+String longstring = “asfdasdfasdfasdfasdgfasdfasdfasdfasdf”;
+Webelement inputField = driver.findElement(webdriver.By.name('q'));
+inputField.sendKeys(longstring);  // this works but is slow
+
+// this works like set faster thatn sendkeys
+inputField = driver.findElement(webdriver.By.id('gbqfq'));
+ driver.executeScript("arguments[0].setAttribute('value', '" + longstring +"')", inputField);
+
+
