@@ -1,0 +1,216 @@
+1.	Working with Robot object – mouse action
+
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+
+public class Functions {
+	public static void main(String[] args) throws IOException, AWTException, InterruptedException 
+	{
+		//only static methods will be called inside main method without objects
+		RoboKeyDemo();
+	}	
+	public static void RoboKeyDemo()throws IOException, AWTException, InterruptedException
+	{		
+		String str = "Hi Hello how are you.";
+		 Runtime.getRuntime().exec("notepad.exe"); //IOException	
+		 Thread.sleep(500); // InterruptedException
+		 int i;
+		 Robot rb = new Robot();//AWTException
+		 for(i=0; i < str.length(); i++)		 
+		 {		 
+			 char c;
+			 c= str.charAt(i);		
+			 int f=(int) c;			 
+			 // special characters cant be entered with below line Eg:@
+			 rb.keyPress(KeyEvent.getExtendedKeyCodeForChar(f));
+			 rb.delay(100);			 
+		 }
+		 rb.keyPress(65);//enter small a in the notepad
+		 rb.keyRelease(65);
+		 rb.keyPress(KeyEvent.VK_ENTER);//VK_CONTROL,VK_V,VK_AT(@)
+		 rb.keyRelease(KeyEvent.VK_ENTER);
+	}
+	
+	public void sendKeys(Robot robot, String keys) {
+	    for (char c : keys.toCharArray()) {
+	        int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
+	        //below line throws error if any character code is not found
+	        if (KeyEvent.CHAR_UNDEFINED == keyCode) {
+	            throw new RuntimeException(
+	            		"Key code not found for character '" + c + "'");
+	        }
+	        robot.keyPress(keyCode);
+	        robot.delay(100);
+	        robot.keyRelease(keyCode);
+	        robot.delay(100);
+	    }
+	}
+}
+
+
+2.	Get Current Test folder or User Directory
+
+//C:\Users\cdhandap\Java Learning WS\LearnSelenium
+ System.out.println(System.getProperty("user.dir"));
+//C:\Users\cdhandap
+ System.out.println(System.getProperty("user.home"));
+
+3.	Forward(/) or Backward(\)  for Path
+If you use / then you only need a single slash.
+If you use \, you need to use \\. That is, you need to escape it. 
+Using (/) forward slashes will make it system independent 
+You can also use the resolve() method of the java.nio.Path class to add directories / files to the existing path. That avoids the hassle of using forward or backward slashes.
+
+4.	How to write paths in better way using Resolve method
+import java.nio.file.Path;
+import java.nio.file.Paths;
+public static void pathseperator()
+	{
+	 // the path seperator for this system
+        String pathSep = System.getProperty("path.separator");
+        System.out.println("Path Sep: " + pathSep); //Path Sep: ;
+        
+        // my home directory
+        Path homeDir = Paths.get(System.getProperty("user.home"));      
+        // lets print them
+        System.out.println(homeDir); //C:\Users\cdhandap
+        System.out.println(homeDir.toAbsolutePath()); //C:\Users\cdhandap
+
+        // as it turns out, on my linux it is a colon/windows its a semicolon
+        // and Java is using forward slash internally
+        // lets add some more directories to the user.home
+        homeDir = homeDir.resolve("lib").resolve("geckodriver.exe");        
+        System.out.println(homeDir); //C:\Users\cdhandap\lib\geckodriver.exe
+	}	
+5.	Selenium Actions class vs Robot class
+Robot Class is defined in java.awt package within java.desktop module
+Actions Class is defined in org.openqa.selenium.interactions package and is the User-Facing API for emulating complex user gestures when using Selenium.
+Robot robot = new Robot();
+// Press keys using robot with a gap of of 500 mili seconds is added after every key press
+robot.keyPress(KeyEvent.VK_S);
+Thread.sleep(500);
+robot.keyPress(KeyEvent.VK_T);
+Thread.sleep(500);
+	Actions act = new Actions(driver);
+WebDriverWait wait = new WebDriverWait(driver, 10);
+WebElement electronics = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li/a[@href='/electronics']")));
+act.moveToElement(electronics).perform();
+
+
+6.	Action class
+There are 2 types of actions
+1.	Keyboard acitons
+sendKeys
+PressKey
+ReleaseKey
+
+2.	Mouse action
+click (WebElement onElement)
+doubleclick (WebElement onElement)
+mouseDown(WebElement onElement) : Holds down the left mouse button on an element mouseUp(WebElement onElement) : Releases the mouse button on an element Void mouseMove(WebElement onElement) : Move (from the current location ) to another element 
+mosueMove(WebElement onElement ,long xOffset, long yOffset ) : Move (from the current location) to new coordinates 
+contextClick(WebElement onElement) : Performs a context-click (right click) on an element
+WebElement txtUsername = driver.findElement(By.id("email"));
+
+Actions builder = new Actions(driver);
+Action seriesOfActions = builder
+	.moveToElement(txtUsername)
+	.click()
+	.keyDown(txtUsername, Keys.SHIFT)
+	.sendKeys(txtUsername, "hello")
+	.keyUp(txtUsername, Keys.SHIFT)
+	.doubleClick(txtUsername)
+	.contextClick() //right click
+	.build();
+	
+seriesOfActions.perform() ;
+
+7.	Upload file:
+public static String UploadFile() throws IOException, InterruptedException {
+         Logs.Ulog("uploading document ");
+         try {
+                 //put path to your File in a clipboard
+             StringSelection ss = new StringSelection(TC.InputData);
+             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);             
+             Robot robot = new Robot();
+             robot.keyPress(KeyEvent.VK_ENTER);
+             robot.keyRelease(KeyEvent.VK_ENTER);
+             robot.keyPress(KeyEvent.VK_CONTROL);
+             robot.keyPress(KeyEvent.VK_V);
+             robot.keyRelease(KeyEvent.VK_V);
+             robot.keyRelease(KeyEvent.VK_CONTROL);
+             Thread.sleep(4000);
+             robot.keyPress(KeyEvent.VK_ENTER);
+             robot.keyRelease(KeyEvent.VK_ENTER);      
+                  return UpdateResult.Done();       
+         } catch (Exception e) {
+                return CatchStatementWebElement(e.getMessage());
+         }
+ }
+public static String SendKey_ALT_S() throws IOException, InterruptedException {
+	      try {
+	         Logs.Ulog("Executing SendKeyTab");
+	         Robot t = new Robot();		     
+	         t.keyPress(18);
+	         t.keyPress(83);
+	         Thread.sleep(2000L);
+	         t.keyRelease(18);
+	         t.keyRelease(83);		        	         
+	         return UpdateResult.Done();
+	      } catch (Throwable arg0) {
+	         return CatchStatementWebElement(arg0.getMessage());
+	      }
+	   }		
+  public static String validateExcelHeader() throws Exception, AWTException, InterruptedException {			
+			ArrayList fieldIdType = new ArrayList<>();
+			String strFilepath;
+			String[] strInputColumns = TC.InputData.split("\\|");
+			System.out.println(strInputColumns.length);
+			try {		
+			String home = System.getProperty("user.home");		         
+			strFilepath = home + "\\Downloads\\fileOut.xlsx";				
+			System.out.println(strFilepath);
+			FileInputStream excelFile = new FileInputStream(new File(strFilepath));		
+			XSSFWorkbook workbook = new XSSFWorkbook(excelFile);
+			System.out.println("asigned excelfile");
+			XSSFSheet datatypeSheet = workbook.getSheetAt(0);
+			Row row;
+			row = datatypeSheet.getRow(1);
+			int col = row.getPhysicalNumberOfCells();
+			for (int colIndex = 0; colIndex < row.getPhysicalNumberOfCells(); colIndex++) {							fieldIdType.add(row.getCell(colIndex).toString());
+			System.out.println("value in column " + colIndex + " is " + row.getCell(colIndex).toString());
+			}
+			UpdateDescription("The columns match with the downloaded Excel - " + fieldIdType);
+			        UpdateResult.ActualData = TC.PASS;					  
+                return UpdateResult.UpdateStatus(); 					
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				   return UpdateResult.UpdateStatus(); 
+			} catch (IOException e) {
+				e.printStackTrace();
+				   return UpdateResult.UpdateStatus(); 
+			}				            
+		}
+1.	Get color of any element
+2.	String bgColor = td_Home.getCssValue("background-color");
+
+If you want to handle drag and drop event, then you can use following code:
+Actions builder = new Actions(driver);
+WebElement dragElement=driver.findElement(By.id(“draggable”));
+WebElement dropElement=driver.findElement(By.id(“droppable”));
+// To hold the drag element and then move it to drop element location
+Action dragDrop = builder.clickAndHold(dragElement).moveToElement(dropElement).build();
+// To Execute the drag and drop Action
+dragDrop.perform();
+If you want to click on menu option in mouse hover menu, then follow this code:
+Actions builder = new Actions(driver);
+WebElement menu = driver.findElement(By.id(“menu”));
+WebElement menuoption = driver.findElement(By.id(“menuoption”));
+//Move to the main menu option and then sub-option
+Action element= builder.moveToElement(menu).moveToElement(menuoption).build();
+// To Execute the Action
+element.perform();
+It’s evident from the above examples that using “Actions API” in Webdriver simplifies input interactions. In fact some events can be only handled by Action API e.g. Drag and drop.
+
