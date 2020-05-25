@@ -1,0 +1,55 @@
+package test;
+
+import java.awt.AWTException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class test {
+
+	public static void main(String args[]) throws AWTException, InterruptedException, Exception
+	{
+		System.out.println("value in ");
+		validateExcelHeader();
+	}
+	public static void validateExcelHeader() throws Exception, AWTException, InterruptedException {			
+		ArrayList<String> fieldIdType = new ArrayList<>();
+		String strFilepath;
+		try {		
+		strFilepath = "C:\\Users\\dmchitra\\test.xlsx";				
+		System.out.println(strFilepath);
+		FileInputStream excelFile = new FileInputStream(new File(strFilepath));		
+		XSSFWorkbook workbook = new XSSFWorkbook(excelFile);
+		XSSFSheet datatypeSheet = workbook.getSheetAt(0);
+		Row row;
+		row = datatypeSheet.getRow(1);
+		int rowCount = datatypeSheet.getPhysicalNumberOfRows(); //total no of rows in the sheet
+		System.out.println("No of rows"+ rowCount);
+		int col = row.getPhysicalNumberOfCells(); //get number of columns in first row
+		System.out.println("No of cols "+ col);
+		// Iterating rows
+		for (int i = 0; i < rowCount; i++) {		
+			Row r = datatypeSheet.getRow(i);
+			int columnCount = r.getPhysicalNumberOfCells();			
+			for (int j = 0; j < columnCount; j++) {
+				Cell c = r.getCell(j);				
+				String data = c.getStringCellValue(); 
+				System.out.println("value in row-" +i + " and column-" + j+" is " + data);
+			}		
+		} 
+		} 
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}				            
+	}
+}
